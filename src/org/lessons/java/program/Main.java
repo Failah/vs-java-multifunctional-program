@@ -18,6 +18,7 @@ public class Main {
 			System.out.println("4. Launch the Password Generator.");
 			System.out.println("5. Launch the String Manipulator.");
 			System.out.println("6. Enter the Game Hub.");
+			System.out.println("7. Launch the Dice Generator.");
 			System.out.println("10. Quit the program.");
 			if (s.hasNextInt()) {
 				int choice = s.nextInt();
@@ -51,6 +52,10 @@ public class Main {
 					case 6:
 						System.out.println("");
 						GameHub.main(args);
+						break;
+					case 7:
+						System.out.println("");
+						DiceGenerator.main(args);
 						break;
 					case 10:
 						System.out.println("");

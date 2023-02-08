@@ -15,19 +15,38 @@ public class HangmanGame {
 
 		while (play) {
 			Scanner keyboard = new Scanner(System.in);
-			Scanner scanner = new Scanner(new File(
-					"C:/Users/Valerio/Desktop/Boolean/Java/Workspace1/vs-java-multifunctionl-program/src/org/lessons/java/games/paroletest.txt"));
-			List<String> wordsList = new ArrayList<>();
 
-			while (scanner.hasNextLine()) {
-				wordsList.add(scanner.nextLine().toLowerCase());
+			System.out.println("Enter the number of players: (1 or 2) ");
+			String player = keyboard.nextLine();
+			String randomWord;
+
+			while (!player.equals("1") && !player.equals("2")) {
+				System.out.println("Invalid input. Please type '1' or '2' to make your selection.");
+				System.out.println("Enter the number of players: (1 or 2) ");
+				player = keyboard.nextLine();
 			}
 
-			Random rand = new Random();
+			if (player.equals("1")) {
 
-			String randomWord = wordsList.get(rand.nextInt(wordsList.size()));
+				Scanner scanner = new Scanner(new File(
+						"C:/Users/Valerio/Desktop/Boolean/Java/Workspace1/vs-java-multifunctional-program/src/org/lessons/java/games/paroletest.txt"));
+				List<String> wordsList = new ArrayList<>();
 
-			System.out.println(randomWord);
+				while (scanner.hasNextLine()) {
+					wordsList.add(scanner.nextLine().toLowerCase());
+				}
+
+				Random rand = new Random();
+
+				randomWord = wordsList.get(rand.nextInt(wordsList.size()));
+			} else {
+				System.out.println("Player 1, enter you word: ");
+				randomWord = keyboard.nextLine();
+				System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+				System.out.println("Player 2 to play!");
+			}
+
+			// System.out.println(randomWord);
 
 			List<Character> userGuesses = new ArrayList<>();
 
@@ -37,9 +56,17 @@ public class HangmanGame {
 			while (true) {
 
 				drawHangman(wrongGuessesCounter);
+				if (userGuesses.size() > 0) {
+					System.out.print("Letters you already guessed: ");
+					for (char letter : userGuesses) {
+						System.out.print(letter + " ");
+					}
+					System.out.println();
+				}
 
 				if (wrongGuessesCounter >= 6) {
 					System.out.println("You lost!");
+					System.out.println("The word was: " + randomWord);
 					System.out.print("Do you want to play again? (y/n) ");
 					String answer = keyboard.nextLine();
 					while (!answer.equalsIgnoreCase("y") && !answer.equalsIgnoreCase("n")) {
@@ -84,6 +111,17 @@ public class HangmanGame {
 	private static boolean getPlayerGuess(Scanner keyboard, String randomWord, List<Character> userGuesses) {
 		System.out.println("Enter a guessed letter: ");
 		String guessedLetter = keyboard.nextLine();
+		while (userGuesses.contains(guessedLetter.charAt(0))) {
+			System.out.println("You already picked the letter '" + guessedLetter + "'. Pick another letter!");
+
+			System.out.print("Letters you already guessed: ");
+			for (char letter : userGuesses) {
+				System.out.print(letter + " ");
+			}
+			System.out.println();
+			System.out.println("Enter a guessed letter: ");
+			guessedLetter = keyboard.nextLine();
+		}
 		userGuesses.add(guessedLetter.charAt(0));
 
 		return randomWord.contains(guessedLetter);
@@ -91,6 +129,7 @@ public class HangmanGame {
 
 	private static boolean writeWord(String randomWord, List<Character> userGuesses) {
 		int correctCounter = 0;
+		System.out.println("Find the word:");
 		for (int i = 0; i < randomWord.length(); i++) {
 			if (userGuesses.contains(randomWord.charAt(i))) {
 				System.out.print(randomWord.charAt(i));
